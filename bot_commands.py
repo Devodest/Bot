@@ -17,8 +17,9 @@ async def time_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> No
 
 async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     log(update, context)
-    await update.message.reply_text(f'/Hi\n/time\n/help\n/sum - сумма двух чисел\n/you - информация о видео YouTube\n'
-                                    f'/weather <название города>')
+    await update.message.reply_text(
+        f'/Hi\n/time\n/help\n/sum - сумма двух чисел\n/youtube <Название сслыки> - информация о видео YouTube\n'
+        f'/weather <название города>')
 
 
 async def sum_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
@@ -32,8 +33,12 @@ async def sum_command(update: Update, context: ContextTypes.DEFAULT_TYPE) -> Non
 
 async def get_youtube(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
     log(update, context)
-    vid = YouTube(path_youtube)
-    await update.message.reply_text(f'Title: {vid.title}\nViews: {vid.views}')
+    try:
+        path = update.message.text.split()
+        vid = YouTube(path[1])
+        await update.message.reply_text(f'Title: {vid.title}\nViews: {vid.views}')
+    except:
+        await update.message.reply_text(f'Не правильно введена ссылка')
 
 
 async def start_weather_commands(update: Update, context: ContextTypes.DEFAULT_TYPE) -> None:
